@@ -1,11 +1,33 @@
 import React, { Component } from 'react';
+import store, {INCREMENT, DECREMENT} from '../src/store';
 
 class Counter extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      store: store.getState()
+    }
+    
   }
+
+componentDidMount(){
+  store.subscribe( () => {
+    this.setState({
+      store: store.getState()
+    })
+  })
+}
+
+increment(amount){
+  store.dispatch({type: INCREMENT, payload: amount})
+}
+
+decrement(amount) {
+  store.dispatch({type: DECREMENT, payload: amount})
+}
+
   render() {
+    const {currentValue} = this.state.store;
     return (
       <div className="app">
         <section className="counter">
@@ -13,25 +35,25 @@ class Counter extends Component {
           <div className="counter__button-wrapper">
             <button
               className="counter__button increment-one"
-              onClick={() => null}
+              onClick={() => this.increment(1)}
             >
               +1
             </button>
             <button
               className="counter__button increment-five"
-              onClick={() => null}
+              onClick={() => this.increment(5)}
             >
               +5
             </button>
             <button
               className="counter__button decrement-one"
-              onClick={() => null}
+              onClick={() => this.decrement(1)}
             >
               -1
             </button>
             <button
               className="counter__button decrement-five"
-              onClick={() => null}
+              onClick={() => this.decrement(5)}
             >
               -5
             </button>
